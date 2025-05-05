@@ -181,13 +181,13 @@ func (s *HlsService) manageStream(ctx context.Context, streamID string, t *torre
 // ServeHTTP makes HlsService serve the HLS files.
 func (s *HlsService) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Expecting paths like /hls/{streamID}/playlist.m3u8 or /hls/{streamID}/segmentXX.ts
-	parts := strings.SplitN(strings.TrimPrefix(r.URL.Path, "/"), "/", 2)
-	if len(parts) != 2 {
+	parts := strings.SplitN(strings.TrimPrefix(r.URL.Path, "/"), "/", 3)
+	if len(parts) != 3 {
 		http.NotFound(w, r)
 		return
 	}
-	streamID := parts[0]
-	fileName := parts[1]
+	streamID := parts[1]
+	fileName := parts[2]
 
 	s.mu.RLock()
 	stream, ok := s.streams[streamID]

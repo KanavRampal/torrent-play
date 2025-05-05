@@ -193,7 +193,7 @@ func (s *HlsService) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	stream, ok := s.streams[streamID]
 	s.mu.RUnlock()
 
-	if !ok || stream.State != StateReady && stream.State != StateTranscoding { // Allow serving while transcoding
+	if !ok { // Allow serving while transcoding
 		log.Printf("Stream not found or not ready: %s", streamID)
 		http.NotFound(w, r)
 		return

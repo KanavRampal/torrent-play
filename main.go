@@ -8,9 +8,9 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"torrent-play-refactored/config"   // Adjust import path
-	"torrent-play-refactored/handlers" // Adjust import path
-	"torrent-play-refactored/services" // Adjust import path
+	"torrent-play/config"   // Adjust import path
+	"torrent-play/handlers" // Adjust import path
+	"torrent-play/services" // Adjust import path
 
 	"github.com/anacrolix/torrent"
 )
@@ -54,6 +54,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/add", torrentHandler.AddTorrentHandler)
 	mux.HandleFunc("/hls/", hlsService.ServeHTTP) // HLS service handles requests under /hls/
+	mux.HandleFunc("/search", handlers.NewSearchHandler(services.NewConcreteImdbService(appConfig.ImdbAPIKey)).SearchMoviesHandler)
 
 	log.Printf("Starting HTTP server on http://%s", appConfig.ListenAddr)
 
